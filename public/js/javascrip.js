@@ -1,7 +1,8 @@
 (function (win, doc) {
     'use strict';
-
+    //Delet
     function confirmDel(event) {
+
         event.preventDefault();
         let token = doc.getElementsByName("_token")[0].value;
         if (confirm("Deseja mesmo apagar?")) {
@@ -21,9 +22,7 @@
     if (doc.querySelector('.js-del')) {
         let btn = doc.querySelectorAll('.js-del');
         for (let i = 0; i < btn.length; i++) {
-            console.log(i);
             btn[i].addEventListener('click', confirmDel, false);
-            return false;
         }
     }
 })(window, document);

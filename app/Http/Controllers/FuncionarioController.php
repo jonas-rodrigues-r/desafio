@@ -124,8 +124,8 @@ class FuncionarioController extends Controller
      */
     public function destroy($id)
     {
-        $del = $this->objFunc->destroy($id);
-        return ($del) ? "sim" : "não";
+       $del=$this->objFunc->destroy($id); 
+       return($del)?"sim":"não";
     }
 
     /**

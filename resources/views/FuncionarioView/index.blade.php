@@ -37,7 +37,7 @@
                     <a href="{{ url("funcionario/$funcionarios->id/edit") }}">
                         <button class="btn btn-primary" title="Editar"><i class="fas fa-edit"></i></button>
                     </a>
-                    <a href="{{ url("funcionario/$funcionarios->id") }}" class="js-del">
+                    <a href="{{url("funcionario/$funcionarios->id")}}" class="js-del">
                         <button class="btn btn-danger" title="Deletar"><i class="fas fa-trash"></i></button>
                     </a>
                 </td>
