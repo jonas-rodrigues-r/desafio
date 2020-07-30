@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilialRequest;
 use App\Models\FilialModel;
 use App\Models\FuncionarioModel;
-use Illuminate\Http\Request;
-Use Session;
+use Session;
+
+require_once 'includes/functions.php';
+
 class FilialController extends Controller
 {
     private $objFunc;
@@ -15,7 +18,7 @@ class FilialController extends Controller
     {
         $this->objFunc = new FuncionarioModel();
         $this->objFilial = new FilialModel();
-        
+
     }
 
     /**
@@ -25,7 +28,7 @@ class FilialController extends Controller
      */
     public function index()
     {
-        if(!Session::has('login')){return redirect('/');}
+        if (!Session::has('login')) {return redirect('/');}
         $filial = $this->objFilial->paginate(10);
         $filial = $this->objFilial->all();
         return view('FilialView/index', compact('filial'));
@@ -47,14 +50,27 @@ class FilialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FilialRequest $request)
     {
+        // $validaCnpj= FilialModel::where('cnpj', removeCaract($request->cnpj))->first();
+        // $validaNome= FilialModel::where('nome', removeCaract($request->nome))->first();
+        // $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
+        //->first();
+        //
+        //if($validaNome){
+        //     $valida = ['Esse'];
+        //} else if ($validaCnpj) {
+        //     $valida = ['Esse'];
+        // }else if ($validaRegEs){
+        //     $valida = ['Esse'];
+        // }
+        //isset($valida) ? return $valida : '';
 
         $cad = $this->objFilial->create([
             'nome' => $request->nome,
             'endereco' => $request->endereco,
-            'inscricao_estadual' => $request->inscricao_estadual,
-            'cnpj' => $request->cnpj,
+            'inscricao_estadual' => removeCaract($request->inscricao_estadual),
+            'cnpj' => removeCaract($request->cnpj),
         ]);
         if ($cad) {
             return redirect('filial');
@@ -92,13 +108,27 @@ class FilialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FilialRequest $request, $id)
     {
+        // $validaCnpj= FilialModel::where('cnpj', removeCaract($request->cnpj))
+        //->andWhere("id", "<>", $id);
+        //$validaNome= FilialModel::where('nome', removeCaract($request->nome))->
+        //-->andWhere("id", "<>", $id);
+        // $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
+        //-->andWhere("id", "<>", $id);
+        //if($validaNome){
+        //     $valida = ['Esse'];
+        //} else if($validaCnpj) {
+        //     $valida = ['Esse'];
+        // }else if ($validaRegEs){
+        //     $valida = ['Esse'];
+        // }
+        //isset($valida) ? return $valida : '';
         $this->objFilial->where(['id' => $id])->update([
             'nome' => $request->nome,
             'endereco' => $request->endereco,
-            'inscricao_estadual' => $request->inscricao_estadual,
-            'cnpj' => $request->cnpj,
+            'inscricao_estadual' => removeCaract($request->inscricao_estadual),
+            'cnpj' => removeCaract($request->cnpj),
         ]);
         return redirect('filial');
     }
@@ -110,7 +140,8 @@ class FilialController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   //$filiais = $this->objFunc->where('id_filial',$id);
+    {
+        //$filiais = $this->objFunc->where('id_filial',$id);
         //$del = $this->objFunc-->destroy($id);
         $del = $this->objFilial->destroy($id);
         dd($del);

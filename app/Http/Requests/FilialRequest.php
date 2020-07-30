@@ -24,10 +24,10 @@ class FilialRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
+            'nome' => 'required|min:5',
             'endereco' => 'required',
-            'inscricao_estadual' => 'required',
-            'cnpj' => 'required'
+            'inscricao_estadual' => 'required|min:10',
+            'cnpj' => 'required|min:18'
         ];
     }
 }

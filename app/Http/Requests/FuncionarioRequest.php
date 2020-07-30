@@ -24,10 +24,11 @@ class FuncionarioRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
+            'nome' => 'required|min:7',
+            'data_nascimento' => 'required|date',
             'id_filial' => 'required',
             'sexo' => 'required',
-            'cpf' => 'required',
+            'cpf' => 'required|min:14',
             'endereco' => 'required',
             'cargo' => 'required',
             'salario' => 'required',

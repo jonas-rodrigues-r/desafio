@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests;
+
 use App\Http\Requests\FuncionarioRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\FilialModel;
 use App\Models\FuncionarioModel;
+
 use Illuminate\Support\Facades\Hash;
+
 use Session;
+
+require_once 'includes/functions.php';
 
 class FuncionarioController extends Controller
 {
@@ -27,7 +31,7 @@ class FuncionarioController extends Controller
      */
     public function index()
     {
-        if(!Session::has('login')){return redirect('/');}
+        if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->paginate(10);
         $funcionario = $this->objFunc->all();
         return view('FuncionarioView/index', compact('funcionario'));
@@ -48,21 +52,26 @@ class FuncionarioController extends Controller
      */
     public function store(FuncionarioRequest $request)
     {
+        // $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))->first();
+        // if ($validaCpf) {
+        //     $valida = ['Esse'];
+        //     return view('FuncionarioView/create', $valida);
+        // }
 
         $cad = $this->objFunc->create([
             'nome' => $request->nome,
-            'data_nascimento' => date('Y-m-d', strtotime($request->data_nascimento)),
+            'data_nascimento' => formatDtBd($request->data_nascimento),
             'sexo' => $request->sexo,
-            'cpf' => $request->cpf,
+            'cpf' => removeCaract($request->cpf),
             'endereco' => $request->endereco,
             'cargo' => $request->cargo,
-            'salario' => $request->salario,
+            'salario' => removeMaskDinheiro($request->salario),
             'situacao' => $request->situacao,
             'password' => Hash::make($request->password),
-            'id_filial' => $request->id_filial,
+            'id_filial' => $request->id_filial
         ]);
         if ($cad) {
-            return redirect('listarfuncionario/'.$request->id_filial);
+            return redirect('listarfuncionario/' . $request->id_filial);
         }
     }
 
@@ -101,17 +110,25 @@ class FuncionarioController extends Controller
      */
     public function update(FuncionarioRequest $request, $id)
     {
+        // Verifica se o CPF é igual ao que está sendo editado e se tem um id diferente,
+        // se tiver id diferente, não pode cadastrar porque é duplicidade
+        // $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))
+        //->andWhere('id', '<>', $id);
+        // if ($validaCpf) {
+        //     $valida = ['Esse'];
+        //     return view('FuncionarioView/create', $valida);
+        // }
         $this->objFunc->where(['id' => $id])->update([
             'nome' => $request->nome,
-            'data_nascimento' => date('Y-m-d', strtotime($request->data_nascimento)),
+            'data_nascimento' => formatDtBd($request->data_nascimento),
             'sexo' => $request->sexo,
-            'cpf' => $request->cpf,
+            'cpf' => removeCaract($request->cpf),
             'endereco' => $request->endereco,
             'cargo' => $request->cargo,
-            'salario' => $request->salario,
+            'salario' => removeMaskDinheiro($request->salario),
             'situacao' => $request->situacao,
             'password' => Hash::make($request->password),
-            'id_filial' => $request->id_filial,
+            'id_filial' => $request->id_filial
         ]);
         return redirect('funcionario');
     }
@@ -124,8 +141,8 @@ class FuncionarioController extends Controller
      */
     public function destroy($id)
     {
-       $del=$this->objFunc->destroy($id); 
-       return($del)?"sim":"não";
+        $del = $this->objFunc->destroy($id);
+        return ($del) ? "sim" : "não";
     }
 
     /**
@@ -163,46 +180,45 @@ class FuncionarioController extends Controller
         $funcionario = $this->objFunc->where('id_filial', $id)->get();
         return view('FuncionarioView/index', compact('funcionario'));
     }
+
     public function logout()
     {
         Session::flush();
         return redirect('/');
-
     }
+
     public function ApresentarLogin()
     {
-       return view('login/login');
+        return view('login/login');
     }
+
     public function FazerLogin(LoginRequest $request)
     {
-        $this->validate($request,[
-         'cpf'=>'required|min:11|max:11',
-         'password'=>'required|size:6'
-        
-         ]);
+        $this->validate($request, [
+            'cpf' => 'required|min:11|max:11',
+            'password' => 'required|size:6',
 
-         $dados=FuncionarioModel::where('cpf',$request->cpf)->first();
-         $resultado="";
-        
-         if(!$dados){
+        ]);
+
+        $dados = FuncionarioModel::where('cpf', $request->cpf)->first();
+        $resultado = "";
+
+        if (!$dados) {
             $errors_bd = ['Essa Conta de Usuário não Existe!'];
-            return view('login/login',compact('errors_bd'));
-         }else if(!Hash::check($request->password, $dados->password)){
+            return view('login/login', compact('errors_bd'));
+        } else if (!Hash::check($request->password, $dados->password)) {
             $errors_bd = ['Senha Incorreta'];
-            return view('login/login',compact('errors_bd'));
-             
-         } else if(!($dados->situacao)){
+            return view('login/login', compact('errors_bd'));
+
+        } else if (!($dados->situacao)) {
             $errors_bd = ['Funcionario Inativo'];
-            return view('login/login',compact('errors_bd'));
-               
-            }         
-         
-         Session::put('login','sim');
-         Session::put('funcionario',$dados->nome);
+            return view('login/login', compact('errors_bd'));
+
+        }
+
+        Session::put('login', 'sim');
+        Session::put('funcionario', $dados->nome);
 
         return redirect('filial');
-         
     }
-    
-
 }

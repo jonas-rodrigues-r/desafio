@@ -12,7 +12,7 @@
     </div>
     @endif
     @if(isset($funcionario))
-        <form name="formEdit" id="formEdit" method="post" action="{{ url("funcionario/$funcionario->id") }}">
+        <form name="formEdit" id="formEdit" method="post" action="{{ url("funcionario/$funcionario->id") }}" onsubmit="validaFuncionario();">
         @method('PUT')
     @else
         <form name="formCad" id="formCad" method="post" action="{{ url('funcionario') }}">
@@ -27,7 +27,8 @@
                 @endforeach
             </select>
 
-            <input class="form-control" type="text" name="data_nascimento" id="data_nascimento" placeholder="Data De Nascimento" value="{{ $funcionario->data_nascimento??'' }}" required />
+            <input class="form-control data" type="text" name="data_nascimento" id="data_nascimento" placeholder="Data De Nascimento"
+            value="{{ isset($funcionario->data_nascimento) ? date('m/d/Y', strtotime($funcionario->data_nascimento)): ''}}" required />
 
             <select class="form-control" name="sexo" id="sexo" required >
                 <option value="">Selecione um sexo</option>
@@ -35,13 +36,13 @@
                 <option value="F" {{ isset($funcionario->sexo) && $funcionario->sexo == "F" ? "selected" : "false" }}>Feminino</option>
             </select>
 
-            <input class="form-control" type="text" name="cpf" id="cpf" maxlength="14" placeholder="CPF" value="{{ $funcionario->cpf??'' }}" required />
+            <input class="form-control cpf" type="text" name="cpf" id="cpf" maxlength="14" placeholder="CPF" value="{{ $funcionario->cpf??'' }}" required />
 
-            <input class="form-control" type="text" name="endereco" maxlength="14" id="endereco" placeholder="Endereço"value="{{ $funcionario->endereco??'' }}" required />
+            <input class="form-control" type="text" name="endereco" maxlength="100" id="endereco" placeholder="Endereço"value="{{ $funcionario->endereco??'' }}" required />
 
             <input class="form-control" type="text" name="cargo" id="cargo" maxlength="50" placeholder="Cargo"value="{{ $funcionario->cargo??'' }}"required />
 
-            <input class="form-control" type="text" name="salario" id="salario" placeholder="Salario"value="{{ $funcionario->salario??'' }}" required />
+            <input class="form-control dinheiro" type="text" name="salario" id="salario" placeholder="Salario"value="{{ $funcionario->salario??'' }}" required />
 
             <select class="form-control" name="situacao" id="situacao" required >
                 <option value="">Situação</option>

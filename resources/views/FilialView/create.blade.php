@@ -21,9 +21,9 @@
 
             <input class="form-control" type="text" name="endereco" id="endereco" maxlent="100" placeholder="Endereço" value="{{ $filial->endereco??'' }}" required />
 
-            <input class="form-control" type="text" name="inscricao_estadual" maxlent="12" id="inscricao_estadual" placeholder="Inscricao Estadual"value="{{ $filial->inscricao_estadual??'' }}" required />
+            <input class="form-control registroEs" type="text" name="inscricao_estadual" maxlent="12" id="inscricao_estadual" placeholder="Inscricao Estadual"value="{{ $filial->inscricao_estadual??'' }}" required />
 
-            <input class="form-control" type="text" name="cnpj" id="cnpj" maxlent="14" placeholder="CNPJ" value="{{ $filial->cnpj??'' }}" required />
+            <input class="form-control cnpj" type="text" name="cnpj" id="cnpj" maxlent="14" placeholder="CNPJ" value="{{ $filial->cnpj??'' }}" required />
 
             <input class="btn btn-primary mt-3" type="submit" value="@if(isset($filial)) Editar @else Cadastrar @endif">
 

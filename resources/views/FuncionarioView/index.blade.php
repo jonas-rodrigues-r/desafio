@@ -28,7 +28,7 @@
             <tr>
                 <td>{{ $funcionarios->nome }}</td>
                 <td>{{ $funcionarios->cargo }}</td>
-                <td>{{ $funcionarios->sexo }}</td>
+                <td>{{ $funcionarios->sexo == "M" ? "Masculino" : "Feminino" }}</td>
                 <td>{{ $filial->nome }}</td>
                 <td>
                     <a href="{{ url("funcionario/$funcionarios->id") }}">

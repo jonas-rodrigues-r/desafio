@@ -9,13 +9,13 @@
     @endphp
 
     Nome: {{ $funcionario->nome }}<br>
-    Sexo: {{ $funcionario->sexo }}<br>
+    Sexo: {{ $funcionario->sexo == "M" ? "Masculino" : "Feminino" }}<br>
     Data Nascimento: {{ date('d/m/Y', strtotime($funcionario->data_nascimento)) }}<br>
     CPF: {{ $funcionario->cpf }}<br>
     Endereço: {{ $funcionario->endereco }}<br>
     Cargo: {{ $funcionario->cargo }}<br>
     Salario: {{ $funcionario->salario }}<br>
-    Situação: {{ $funcionario->situacao }}<br>
+    Situação: {{ $funcionario->situacao == true ? "Ativo" : "Inativo"}}<br>
     Filial: {{ $filial->nome }}<br>
     CNPJ: {{ $filial->cnpj }}
 

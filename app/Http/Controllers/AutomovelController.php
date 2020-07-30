@@ -15,7 +15,6 @@ class AutomovelController extends Controller
 
     public function __construct()
     {
-        
         $this->objFilial = new FilialModel();
         $this->objAutomovel = new AutomovelModel();
         $this->objCategoria = new CategoriaAutomovelModel();
@@ -49,6 +48,11 @@ class AutomovelController extends Controller
      */
     public function store(AutomovelRequest $request)
     {
+        // $validaChassi = AutomovelModel::where('n_chassi', removeCaract($request->n_chassi))->first();
+        // if ($validaChassi) {
+        //     $valida = ['Esse'];
+        //     return view('AutomovelView/create', $valida);
+        // }
         $cad = $this->objAutomovel->create([
             'id_filial' => $request->id_filial,
             'nome' => $request->nome,
@@ -98,6 +102,12 @@ class AutomovelController extends Controller
      */
     public function update(AutomovelRequest $request, $id)
     {
+        // $validaChassi = AutomovelModel::where('n_chassi', removeCaract($request->n_chassi))
+        //->andWhere('id', '<>', $id);
+        // if ($validaChassi) {
+        //     $valida = ['Esse'];
+        //     return view('AutomovelView/create', $valida);
+        // }
         $this->objAutomovel->where(['id' => $id])->update([
             'id_filial' => $request->id_filial,
             'nome' => $request->nome,

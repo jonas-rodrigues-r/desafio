@@ -25,10 +25,10 @@ class AutomovelRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'ano' => 'required',
+            'ano' => 'required|min:4|max:4',
             'modelo' => 'required',
             'cor' => 'required',
-            'n_chassi' => 'required',
+            'n_chassi' => 'required|17',
             'id_filial' => 'required',
             'id_categoria_automovel' => 'required'
         ];
