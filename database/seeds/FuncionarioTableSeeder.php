@@ -15,7 +15,7 @@ class FuncionarioTableSeeder extends Seeder
     public function run()
     {
         FuncionarioModel::create([
-            'id' => 400,
+            'id' => 1,
             'nome' => 'Adminitrador Filial',
             'data_nascimento' => '1991-02-08',
             'sexo' => 'M',
@@ -23,9 +23,9 @@ class FuncionarioTableSeeder extends Seeder
             'endereco' => 'Rua 25 de Março - Santa Teresa - ES',
             'cargo' => 'Supervisor',
             'salario' => '5000.00',
-            'situacao' => '1',
+            'situacao' => 1,
             'password' => Hash::make('#Adm91!'),
-            'id_filial' => 400
+            'id_filial' => 1
         ]);
     }
 }

@@ -13,7 +13,7 @@ class FilialTableSeeder extends Seeder
     public function run()
     {
          FilialModel::create([
-            'id' => 400,
+            'id' => 1,
             'nome' => 'Colibri Cars',
             'endereco' => 'Rua Colibri, Santa Teresa - ES',
             'inscricao_estadual' => '920502555',
