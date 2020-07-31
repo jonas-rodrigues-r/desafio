@@ -12,7 +12,7 @@
     </div>
     @endif
     @if(isset($funcionario))
-        <form name="formEdit" id="formEdit" method="post" action="{{ url("funcionario/$funcionario->id") }}" onsubmit="validaFuncionario();">
+        <form name="formEdit" id="formEdit" method="post" action="{{ url("funcionario/$funcionario->id") }}">
         @method('PUT')
     @else
         <form name="formCad" id="formCad" method="post" action="{{ url('funcionario') }}">

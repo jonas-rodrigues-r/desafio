@@ -34,7 +34,7 @@ class FuncionarioController extends Controller
     public function index()
     {
         if (!Session::has('login')) {return redirect('/');}
-        $funcionario = $this->objFunc->paginate(10);
+        $funcionario = $this->objFunc->all();
         return view('FuncionarioView/index', compact('funcionario'));
     }
 
@@ -117,15 +117,6 @@ class FuncionarioController extends Controller
     public function update(FuncionarioRequest $request, $id)
     {
         if (!Session::has('login')) {return redirect('/');}
-        $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))
-            ->where('id', '<>', $id);
-        if ($validaCpf) {
-            $filial = $this->filial;
-            $funcionario = $request;
-            $valida = array("O CPF $request->cpf " . MSG04);
-            return view('FuncionarioView/create', compact('filial', 'funcionario'))
-                ->withErrors($valida);
-        }
 
         $this->objFunc->where(['id' => $id])->update([
             'nome' => $request->nome,
@@ -139,7 +130,7 @@ class FuncionarioController extends Controller
             'password' => Hash::make($request->password),
             'id_filial' => $request->id_filial,
         ]);
-        return redirect('funcionario');
+        return redirect('listarfuncionario/'.$request->id_filial);
     }
 
     /**
@@ -188,6 +179,7 @@ class FuncionarioController extends Controller
     {
         if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->where('id_filial', $id)->get();
+        $funcionario = $this->objFunc->paginate(10);
         return view('FuncionarioView/index', compact('funcionario'));
     }
 

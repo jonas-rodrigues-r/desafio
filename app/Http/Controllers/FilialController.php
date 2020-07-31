@@ -34,8 +34,7 @@ class FilialController extends Controller
         $filial = $this->objFilial->paginate(10);
         return view('FilialView/index', compact('filial'));
     }
-
-    /**
+     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -76,11 +75,9 @@ class FilialController extends Controller
         }
     }
 
-    public function mensagens($validaNome, $validaCnpj, $validaRegEs)
+    public function mensagens( $validaCnpj, $validaRegEs)
     {
-        if ($validaNome) {
-            $valida = [MSG01];
-        } else if ($validaCnpj) {
+        if ($validaCnpj) {
             $valida = [MSG02];
         } else if ($validaRegEs) {
             $valida = [MSG03];
@@ -123,20 +120,8 @@ class FilialController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(FilialRequest $request, $id)
-    {
+    { 
         if (!Session::has('login')) {return redirect('/');}
-        $validaCnpj = FilialModel::where('cnpj', removeCaract($request->cnpj))->where("id", "<>", $id);
-        $validaNome = FilialModel::where('nome', $request->nome)->where("id", "<>", $id);
-        $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
-        ->where("id", "<>", $id);
-
-        $valida = $this->mensagens($validaNome, $validaCnpj, $validaRegEs);
-
-        if ($valida) {
-            $filial = $request;
-            return view('FilialView/create', compact('filial'))
-                ->withErrors($valida);
-        }
 
         $this->objFilial->where(['id' => $id])->update([
             'nome' => $request->nome,
@@ -145,6 +130,7 @@ class FilialController extends Controller
             'cnpj' => removeCaract($request->cnpj),
         ]);
         return redirect('filial');
+        
     }
 
     /**

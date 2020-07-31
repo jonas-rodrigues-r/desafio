@@ -28,7 +28,7 @@ class AutomovelRequest extends FormRequest
             'ano' => 'required|min:4|max:4',
             'modelo' => 'required',
             'cor' => 'required',
-            'n_chassi' => 'required|17',
+            'n_chassi' => 'required',
             'id_filial' => 'required',
             'id_categoria_automovel' => 'required'
         ];

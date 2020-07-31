@@ -45,6 +45,7 @@
   	        @endforeach
         </tbody>
     </table>
- 
+    
+    {!!$funcionario->links()!!}
 </div>
 @endsection

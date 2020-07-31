@@ -12,10 +12,10 @@
     </div>
     @endif
     @if(isset($automovel))
-        <form name="formEdit" id="formEdit" method="post" action="{{ url("automovel/$automovel->id") }}">
+        <form name="formEdit" id="formEdit" method="POST" action="{{ url("automovel/editar/$automovel->id") }}">
         @method('PUT')
     @else
-        <form name="formCad" id="formCad" method="post" action="{{ url('automovel') }}">
+        <form name="formCad" id="formCad" method="POST" action="{{ url('automovel') }}">
     @endif
     @csrf
             <input class="form-control" type="text" name="nome" id="nome" placeholder="Nome" value="{{ $automovel->nome??''}}" required >

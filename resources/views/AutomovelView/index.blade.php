@@ -49,5 +49,6 @@
             @endforeach
         </tbody>
     </table>
+    {!!$automovel->links()!!}
 </div>
 @endsection

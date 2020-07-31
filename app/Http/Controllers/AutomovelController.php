@@ -8,6 +8,8 @@ use App\Models\CategoriaAutomovelModel;
 use Illuminate\Support\Facades\Hash;
 use App\Models\FilialModel;
 
+require_once 'includes/constantes.php';
+
 class AutomovelController extends Controller
 {
     private $objAutomovel;
@@ -31,7 +33,7 @@ class AutomovelController extends Controller
     {
         if(!Session::has('login')){return redirect('/');}
         
-        $automovel = $this->objAutomovel->paginate(10);
+        $automovel = $this->objAutomovel->all();
         return view('AutomovelView/index', compact('automovel'));
     }
 
@@ -111,16 +113,6 @@ class AutomovelController extends Controller
     public function update(AutomovelRequest $request, $id)
     {
         if(!Session::has('login')){return redirect('/');}
-        $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)
-        ->where('id', '<>', $id);
-        if ($validaChassi) {
-            $filial = $this->filial;
-            $automovel = $request;
-            $valida = [MSG05];
-            return view('AutomovelView/create', compact('filial', 'automovel'))
-            ->withErrors($valida);
-        }
-
         $this->objAutomovel->where(['id' => $id])->update([
             'id_filial' => $request->id_filial,
             'nome' => $request->nome,
@@ -130,7 +122,8 @@ class AutomovelController extends Controller
             'n_chassi' => $request->n_chassi,
             'id_categoria_automovel' => $request->id_categoria_automovel,
         ]);
-        return redirect('automovel');
+        return redirect('listarautomovel/'.$request->id_filial);
+        
     }
 
     /**
@@ -155,6 +148,7 @@ class AutomovelController extends Controller
     {
         if(!Session::has('login')){return redirect('/');}
         $automovel = $this->objAutomovel->where('id_filial', $id)->get();
+        $automovel = $this->objAutomovel->paginate(10);
         return view('AutomovelView/index', compact('automovel'));
     }
 }
