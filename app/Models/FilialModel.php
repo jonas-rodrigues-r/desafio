@@ -17,6 +17,7 @@ class FilialModel extends Model
 
     public function relFuncionario()
     {
+        
         return $this->hasMany('App\Models\FuncionarioModel', 'id_filial');
     }
 

@@ -23,7 +23,7 @@
             <select class="form-control" name="id_filial" id="id_filial"value="{{ $funcionario->id_filial??'' }}" required >
                 <option value="{{ $funcionario->relFilial->id??'' }}">{{ $funcionario->relFilial->nome??'Filial' }}</option>
                 @foreach($filial as $filiais)
-                <option value="{{ $filiais->id }}">{{ $filiais->nome }}</option>
+                <option value="{{ $filiais->id}}">{{ $filiais->nome }}</option>
                 @endforeach
             </select>
 

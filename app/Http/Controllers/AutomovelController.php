@@ -5,6 +5,7 @@ Use Session;
 use App\Http\Requests\AutomovelRequest;
 use App\Models\AutomovelModel;
 use App\Models\CategoriaAutomovelModel;
+use Illuminate\Support\Facades\Hash;
 use App\Models\FilialModel;
 
 class AutomovelController extends Controller
@@ -29,13 +30,14 @@ class AutomovelController extends Controller
     public function index()
     {
         if(!Session::has('login')){return redirect('/');}
+        
         $automovel = $this->objAutomovel->paginate(10);
-        $automovel = $this->objAutomovel->all();
         return view('AutomovelView/index', compact('automovel'));
     }
 
     public function create()
     {
+        if(!Session::has('login')){return redirect('/');}
         $filial = $this->objFilial->all();
         $categoria = $this->objCategoria->all();
         return view('AutomovelView/create', compact('filial', 'categoria'));
@@ -78,7 +80,8 @@ class AutomovelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
+        if(!Session::has('login')){return redirect('/');}
         $automovel = $this->objAutomovel->find($id);
         return view('AutomovelView/show', compact('automovel'));
     }
@@ -91,6 +94,7 @@ class AutomovelController extends Controller
      */
     public function edit($id)
     {
+        if(!Session::has('login')){return redirect('/');}
         $categoria = $this->objCategoria->all();
         $automovel = $this->objAutomovel->find($id);
         $filial = $this->objFilial->all();
@@ -106,6 +110,7 @@ class AutomovelController extends Controller
      */
     public function update(AutomovelRequest $request, $id)
     {
+        if(!Session::has('login')){return redirect('/');}
         $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)
         ->where('id', '<>', $id);
         if ($validaChassi) {
@@ -148,6 +153,7 @@ class AutomovelController extends Controller
      */
     public function getAutomovel($id)
     {
+        if(!Session::has('login')){return redirect('/');}
         $automovel = $this->objAutomovel->where('id_filial', $id)->get();
         return view('AutomovelView/index', compact('automovel'));
     }

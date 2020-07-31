@@ -52,6 +52,6 @@
     
   </tbody>
 </table>
-
+{!!$filial->links()!!}
 </div>
 @endsection

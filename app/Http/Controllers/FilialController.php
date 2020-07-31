@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FilialRequest;
 use App\Models\FilialModel;
 use App\Models\FuncionarioModel;
+use Illuminate\Support\Facades\Hash;
 use Session;
 
 require_once 'includes/functions.php';
@@ -31,7 +32,6 @@ class FilialController extends Controller
     {
         if (!Session::has('login')) {return redirect('/');}
         $filial = $this->objFilial->paginate(10);
-        $filial = $this->objFilial->all();
         return view('FilialView/index', compact('filial'));
     }
 
@@ -41,7 +41,8 @@ class FilialController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        if (!Session::has('login')) {return redirect('/');}
         return view('FilialView/create');
     }
 
@@ -96,6 +97,7 @@ class FilialController extends Controller
      */
     public function show($id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $filial = $this->objFilial->find($id);
         return view('FilialView/show', compact('filial'));
     }
@@ -108,6 +110,7 @@ class FilialController extends Controller
      */
     public function edit($id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $filial = $this->objFilial->find($id);
         return view('FilialView/create', compact('filial'));
     }
@@ -121,6 +124,7 @@ class FilialController extends Controller
      */
     public function update(FilialRequest $request, $id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $validaCnpj = FilialModel::where('cnpj', removeCaract($request->cnpj))->where("id", "<>", $id);
         $validaNome = FilialModel::where('nome', $request->nome)->where("id", "<>", $id);
         $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))

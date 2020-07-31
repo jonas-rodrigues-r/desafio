@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Models\FilialModel;
 use App\Models\FuncionarioModel;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Requests;
 use Session;
 
 require_once 'includes/functions.php';
@@ -22,6 +23,7 @@ class FuncionarioController extends Controller
         $this->objFilial = new FilialModel();
         $this->objFunc = new FuncionarioModel();
         $this->filial = $this->objFilial->all();
+        
     }
 
     /**
@@ -33,12 +35,12 @@ class FuncionarioController extends Controller
     {
         if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->paginate(10);
-        $funcionario = $this->objFunc->all();
         return view('FuncionarioView/index', compact('funcionario'));
     }
 
     public function create()
     {
+        if (!Session::has('login')) {return redirect('/');}
         $filial = $this->filial;
         $password = $this->generatePassword();
         return view('FuncionarioView/create', compact('filial', 'password'));
@@ -85,6 +87,7 @@ class FuncionarioController extends Controller
      */
     public function show($id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->find($id);
         return view('FuncionarioView/show', compact('funcionario'));
     }
@@ -97,6 +100,7 @@ class FuncionarioController extends Controller
      */
     public function edit($id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->find($id);
         $filial = $this->filial;
         $password = $this->generatePassword();
@@ -112,6 +116,7 @@ class FuncionarioController extends Controller
      */
     public function update(FuncionarioRequest $request, $id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))
             ->where('id', '<>', $id);
         if ($validaCpf) {
@@ -181,6 +186,7 @@ class FuncionarioController extends Controller
      */
     public function getFuncionario($id)
     {
+        if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->where('id_filial', $id)->get();
         return view('FuncionarioView/index', compact('funcionario'));
     }
@@ -202,26 +208,25 @@ class FuncionarioController extends Controller
             'cpf' => 'required|min:11|max:11',
             'password' => 'required|size:6',
         ]);
-
+        
         $dados = FuncionarioModel::where('cpf', $request->cpf)->first();
-        $resultado = "";
+        
 
         if (!$dados) {
             $errors_bd = ['Essa Conta de Usuário não Existe!'];
-            return view('login/login', compact('errors_bd'));
+            return redirect('/')->withErrors($errors_bd);
         } else if (!Hash::check($request->password, $dados->password)) {
             $errors_bd = ['Senha Incorreta'];
-            return view('login/login', compact('errors_bd'));
+            return redirect('/')->withErrors($errors_bd);
 
         } else if (!($dados->situacao)) {
             $errors_bd = ['Funcionario Inativo'];
-            return view('login/login', compact('errors_bd'));
-
+            return redirect('/')->withErrors($errors_bd);
         }
 
         Session::put('login', 'sim');
         Session::put('funcionario', $dados->nome);
-
+        
         return redirect('filial');
     }
 }
