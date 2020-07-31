@@ -8,6 +8,7 @@ use App\Models\FuncionarioModel;
 use Session;
 
 require_once 'includes/functions.php';
+require_once 'includes/constantes.php';
 
 class FilialController extends Controller
 {
@@ -18,7 +19,7 @@ class FilialController extends Controller
     {
         $this->objFunc = new FuncionarioModel();
         $this->objFilial = new FilialModel();
-
+        $this->filial = $this->objFilial->all();
     }
 
     /**
@@ -52,19 +53,16 @@ class FilialController extends Controller
      */
     public function store(FilialRequest $request)
     {
-        // $validaCnpj= FilialModel::where('cnpj', removeCaract($request->cnpj))->first();
-        // $validaNome= FilialModel::where('nome', removeCaract($request->nome))->first();
-        // $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
-        //->first();
-        //
-        //if($validaNome){
-        //     $valida = ['Esse'];
-        //} else if ($validaCnpj) {
-        //     $valida = ['Esse'];
-        // }else if ($validaRegEs){
-        //     $valida = ['Esse'];
-        // }
-        //isset($valida) ? return $valida : '';
+        $validaCnpj = FilialModel::where('cnpj', removeCaract($request->cnpj))->first();
+        $validaNome = FilialModel::where('nome', $request->nome)->first();
+        $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
+        ->first();
+
+        $valida = $this->mensagens($validaNome, $validaCnpj, $validaRegEs);
+        if ($valida) {
+            return view('FilialView/create')
+                ->withErrors($valida);
+        }
 
         $cad = $this->objFilial->create([
             'nome' => $request->nome,
@@ -75,6 +73,19 @@ class FilialController extends Controller
         if ($cad) {
             return redirect('filial');
         }
+    }
+
+    public function mensagens($validaNome, $validaCnpj, $validaRegEs)
+    {
+        if ($validaNome) {
+            $valida = [MSG01];
+        } else if ($validaCnpj) {
+            $valida = [MSG02];
+        } else if ($validaRegEs) {
+            $valida = [MSG03];
+        }
+
+        return isset($valida) ? $valida : "";
     }
 
     /**
@@ -110,20 +121,19 @@ class FilialController extends Controller
      */
     public function update(FilialRequest $request, $id)
     {
-        // $validaCnpj= FilialModel::where('cnpj', removeCaract($request->cnpj))
-        //->andWhere("id", "<>", $id);
-        //$validaNome= FilialModel::where('nome', removeCaract($request->nome))->
-        //-->andWhere("id", "<>", $id);
-        // $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
-        //-->andWhere("id", "<>", $id);
-        //if($validaNome){
-        //     $valida = ['Esse'];
-        //} else if($validaCnpj) {
-        //     $valida = ['Esse'];
-        // }else if ($validaRegEs){
-        //     $valida = ['Esse'];
-        // }
-        //isset($valida) ? return $valida : '';
+        $validaCnpj = FilialModel::where('cnpj', removeCaract($request->cnpj))->where("id", "<>", $id);
+        $validaNome = FilialModel::where('nome', $request->nome)->where("id", "<>", $id);
+        $validaRegEs = FilialModel::where('inscricao_estadual', removeCaract($request->inscricao_estadual))
+        ->where("id", "<>", $id);
+
+        $valida = $this->mensagens($validaNome, $validaCnpj, $validaRegEs);
+
+        if ($valida) {
+            $filial = $request;
+            return view('FilialView/create', compact('filial'))
+                ->withErrors($valida);
+        }
+
         $this->objFilial->where(['id' => $id])->update([
             'nome' => $request->nome,
             'endereco' => $request->endereco,
@@ -141,10 +151,7 @@ class FilialController extends Controller
      */
     public function destroy($id)
     {
-        //$filiais = $this->objFunc->where('id_filial',$id);
-        //$del = $this->objFunc-->destroy($id);
         $del = $this->objFilial->destroy($id);
-        dd($del);
         return ($del) ? "sim" : "não";
     }
 }

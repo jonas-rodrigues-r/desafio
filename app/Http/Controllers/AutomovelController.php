@@ -18,6 +18,7 @@ class AutomovelController extends Controller
         $this->objFilial = new FilialModel();
         $this->objAutomovel = new AutomovelModel();
         $this->objCategoria = new CategoriaAutomovelModel();
+        $this->filial = $this->objFilial->all();
     }
 
     /**
@@ -48,11 +49,14 @@ class AutomovelController extends Controller
      */
     public function store(AutomovelRequest $request)
     {
-        // $validaChassi = AutomovelModel::where('n_chassi', removeCaract($request->n_chassi))->first();
-        // if ($validaChassi) {
-        //     $valida = ['Esse'];
-        //     return view('AutomovelView/create', $valida);
-        // }
+        $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)->first();
+        if ($validaChassi) {
+            $filial = $this->filial;
+            $valida = [MSG05];
+            return view('AutomovelView/create', compact('filial'))
+            ->withErrors($valida);
+        }
+
         $cad = $this->objAutomovel->create([
             'id_filial' => $request->id_filial,
             'nome' => $request->nome,
@@ -102,12 +106,16 @@ class AutomovelController extends Controller
      */
     public function update(AutomovelRequest $request, $id)
     {
-        // $validaChassi = AutomovelModel::where('n_chassi', removeCaract($request->n_chassi))
-        //->andWhere('id', '<>', $id);
-        // if ($validaChassi) {
-        //     $valida = ['Esse'];
-        //     return view('AutomovelView/create', $valida);
-        // }
+        $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)
+        ->where('id', '<>', $id);
+        if ($validaChassi) {
+            $filial = $this->filial;
+            $automovel = $request;
+            $valida = [MSG05];
+            return view('AutomovelView/create', compact('filial', 'automovel'))
+            ->withErrors($valida);
+        }
+
         $this->objAutomovel->where(['id' => $id])->update([
             'id_filial' => $request->id_filial,
             'nome' => $request->nome,

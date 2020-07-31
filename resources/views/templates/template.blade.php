@@ -9,7 +9,6 @@
 	<link rel="stylesheet" href="{{asset('css/style_pag.css')}}">
 	<script src="{{asset("js/jquery-3.5.1.min.js")}}"></script>
 	<script src="{{asset("js/jquery.mask.js")}}"></script>
-	<script src="{{asset("js/validacoes.js")}}"></script>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm col-md-8"></div>

@@ -6,12 +6,11 @@ use App\Http\Requests\FuncionarioRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\FilialModel;
 use App\Models\FuncionarioModel;
-
 use Illuminate\Support\Facades\Hash;
-
 use Session;
 
 require_once 'includes/functions.php';
+require_once 'includes/constantes.php';
 
 class FuncionarioController extends Controller
 {
@@ -22,6 +21,7 @@ class FuncionarioController extends Controller
     {
         $this->objFilial = new FilialModel();
         $this->objFunc = new FuncionarioModel();
+        $this->filial = $this->objFilial->all();
     }
 
     /**
@@ -39,7 +39,7 @@ class FuncionarioController extends Controller
 
     public function create()
     {
-        $filial = $this->objFilial->all();
+        $filial = $this->filial;
         $password = $this->generatePassword();
         return view('FuncionarioView/create', compact('filial', 'password'));
     }
@@ -52,11 +52,13 @@ class FuncionarioController extends Controller
      */
     public function store(FuncionarioRequest $request)
     {
-        // $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))->first();
-        // if ($validaCpf) {
-        //     $valida = ['Esse'];
-        //     return view('FuncionarioView/create', $valida);
-        // }
+        $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))->first();
+        if ($validaCpf) {
+            $filial = $this->filial;
+            $valida = array("O CPF $request->cpf ".MSG04);
+            return view('FuncionarioView/create', compact('filial'))
+                ->withErrors($valida);
+        }
 
         $cad = $this->objFunc->create([
             'nome' => $request->nome,
@@ -68,7 +70,7 @@ class FuncionarioController extends Controller
             'salario' => removeMaskDinheiro($request->salario),
             'situacao' => $request->situacao,
             'password' => Hash::make($request->password),
-            'id_filial' => $request->id_filial
+            'id_filial' => $request->id_filial,
         ]);
         if ($cad) {
             return redirect('listarfuncionario/' . $request->id_filial);
@@ -96,7 +98,7 @@ class FuncionarioController extends Controller
     public function edit($id)
     {
         $funcionario = $this->objFunc->find($id);
-        $filial = $this->objFilial->all();
+        $filial = $this->filial;
         $password = $this->generatePassword();
         return view('FuncionarioView/create', compact('funcionario', 'filial', 'password'));
     }
@@ -110,14 +112,16 @@ class FuncionarioController extends Controller
      */
     public function update(FuncionarioRequest $request, $id)
     {
-        // Verifica se o CPF é igual ao que está sendo editado e se tem um id diferente,
-        // se tiver id diferente, não pode cadastrar porque é duplicidade
-        // $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))
-        //->andWhere('id', '<>', $id);
-        // if ($validaCpf) {
-        //     $valida = ['Esse'];
-        //     return view('FuncionarioView/create', $valida);
-        // }
+        $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))
+            ->where('id', '<>', $id);
+        if ($validaCpf) {
+            $filial = $this->filial;
+            $funcionario = $request;
+            $valida = array("O CPF $request->cpf " . MSG04);
+            return view('FuncionarioView/create', compact('filial', 'funcionario'))
+                ->withErrors($valida);
+        }
+
         $this->objFunc->where(['id' => $id])->update([
             'nome' => $request->nome,
             'data_nascimento' => formatDtBd($request->data_nascimento),
@@ -128,7 +132,7 @@ class FuncionarioController extends Controller
             'salario' => removeMaskDinheiro($request->salario),
             'situacao' => $request->situacao,
             'password' => Hash::make($request->password),
-            'id_filial' => $request->id_filial
+            'id_filial' => $request->id_filial,
         ]);
         return redirect('funcionario');
     }
@@ -197,7 +201,6 @@ class FuncionarioController extends Controller
         $this->validate($request, [
             'cpf' => 'required|min:11|max:11',
             'password' => 'required|size:6',
-
         ]);
 
         $dados = FuncionarioModel::where('cpf', $request->cpf)->first();

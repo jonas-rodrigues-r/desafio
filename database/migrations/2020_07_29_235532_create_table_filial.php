@@ -18,7 +18,7 @@ class CreateTableFilial extends Migration
             $table->string('nome', '100');
             $table->string('endereco', '100');
             $table->string('inscricao_estadual', '12');
-            $table->string('cnpj', '14');
+            $table->string('cnpj', '15');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });
