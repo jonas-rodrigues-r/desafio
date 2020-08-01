@@ -180,7 +180,8 @@ class FuncionarioController extends Controller
         if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->where('id_filial', $id)->get();
         $funcionario = $this->objFunc->paginate(10);
-        return view('FuncionarioView/index', compact('funcionario'));
+        $idFilial = $id;
+        return view('FuncionarioView/index', compact('funcionario', 'idFilial'));
     }
 
     public function logout()
@@ -196,14 +197,8 @@ class FuncionarioController extends Controller
 
     public function FazerLogin(LoginRequest $request)
     {
-        $this->validate($request, [
-            'cpf' => 'required|min:11|max:11',
-            'password' => 'required|size:6',
-        ]);
+        $dados = FuncionarioModel::where('cpf', removeCaract($request->cpf))->first();
         
-        $dados = FuncionarioModel::where('cpf', $request->cpf)->first();
-        
-
         if (!$dados) {
             $errors_bd = ['Essa Conta de Usuário não Existe!'];
             return redirect('/')->withErrors($errors_bd);

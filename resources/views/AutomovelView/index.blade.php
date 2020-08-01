@@ -7,6 +7,10 @@
     <a href="{{url('automovel/create')}}">
       	<button class="btn btn-success">Cadastrar</button>
     </a>
+    <a href="{{url("filial/$idFilial[0]")}}">
+        <button class="btn btn-warning">Voltar&emsp;<i class="fas fa-reply"></i></button>
+        
+      </a>
 </div>
 
 <div class="col-8 m-auto">

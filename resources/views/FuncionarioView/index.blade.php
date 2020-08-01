@@ -3,14 +3,17 @@
 @section('content')
 <h1 class="text-center">Funcionario</h1>
 <div class="text-center mt-3 mb-4">
-  <a href="{{url("funcionario/create")}}">
-    <button class="btn btn-success">Cadastrar</button>
-  </a>
+    <a href="{{url("funcionario/create")}}">
+      	<button class="btn btn-success">Cadastrar</button>
+    </a>
+    <a href="{{url("filial/$idFilial[0]")}}">
+        <button class="btn btn-warning">Voltar&emsp;<i class="fas fa-reply"></i></button>
+        
+      </a>
 </div>
-
 <div class="col-8 m-auto">
   @csrf
-    <table class="table text-center">
+    <table class="table text-center ">
         <thead class="thead-dark">
             <tr>
             <th scope="col">Nome</th>
@@ -40,6 +43,7 @@
                     <a href="{{url("funcionario/$funcionarios->id")}}" class="js-del">
                         <button class="btn btn-danger" title="Deletar"><i class="fas fa-trash"></i></button>
                     </a>
+
                 </td>
             </tr>
   	        @endforeach

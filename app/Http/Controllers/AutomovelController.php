@@ -149,6 +149,7 @@ class AutomovelController extends Controller
         if(!Session::has('login')){return redirect('/');}
         $automovel = $this->objAutomovel->where('id_filial', $id)->get();
         $automovel = $this->objAutomovel->paginate(10);
-        return view('AutomovelView/index', compact('automovel'));
+        $idFilial = $id;
+        return view('AutomovelView/index', compact('automovel','idFilial'));
     }
 }

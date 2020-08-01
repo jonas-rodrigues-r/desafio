@@ -17,7 +17,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input id="cpf" type="text" name="cpf" class="form-control" placeholder="Informe seu CPF" required>
+                        <input id="cpf" type="text" name="cpf" class="form-control cpf" placeholder="Informe seu CPF" required>
                     </div>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">

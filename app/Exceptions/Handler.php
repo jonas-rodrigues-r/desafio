@@ -50,6 +50,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($request->is('*/*')){
+            return Log::error('message');;
+            
+          }if($request->is('funcionario')){
+            return Log::error('message');;
+          
+          }if($request->is('automovel')){
+            return Log::error('message');;
+            
+          }
         return parent::render($request, $exception);
     }
 }

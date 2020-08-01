@@ -18,6 +18,8 @@
         <button class="btn btn-dark">Automovel &emsp;<i class="fas fa-car"></i></button>
     </a>
     <br>
-    <button type="button" class="btn btn-warning mt-3" onclick="history.go(-1);">Voltar&emsp;<i class="fas fa-reply"></i></button>
-</div>
+    <a href="{{url("filial")}}">
+        <button class="btn btn-warning mt-3">Voltar&emsp;<i class="fas fa-reply"></i></button>
+        
+      </a></div></div>
 @endsection
