@@ -179,7 +179,6 @@ class FuncionarioController extends Controller
     {
         if (!Session::has('login')) {return redirect('/');}
         $funcionario = $this->objFunc->where('id_filial', $id)->get();
-      
         $funcionario = $this->objFunc->paginate(5);
         $idFilial = $id;
         return view('FuncionarioView/index', compact('funcionario', 'idFilial'));
