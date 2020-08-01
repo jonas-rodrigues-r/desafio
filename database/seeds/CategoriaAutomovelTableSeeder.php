@@ -19,7 +19,8 @@ class CategoriaAutomovelTableSeeder extends Seeder
             'Hatch Médio',
             'Sedã Médio',
             'Sedã Grande',
-            'SUV, Pick-ups',
+            'SUV', 
+            'Pick-ups',
         ];
 
         $cont = 0;
