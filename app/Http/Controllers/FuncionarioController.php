@@ -57,8 +57,9 @@ class FuncionarioController extends Controller
         $validaCpf = FuncionarioModel::where('cpf', removeCaract($request->cpf))->first();
         if ($validaCpf) {
             $filial = $this->filial;
+            $password = $this->generatePassword();
             $valida = array("O CPF $request->cpf ".MSG04);
-            return view('FuncionarioView/create', compact('filial'))
+            return view('FuncionarioView/create', compact('filial', 'password'))
                 ->withErrors($valida);
         }
 
@@ -177,10 +178,9 @@ class FuncionarioController extends Controller
      */
     public function getFuncionario($id)
     {
-        if (!Session::has('login')) {return redirect('/');}
-        $funcionario = $this->objFunc->where('id_filial', $id)->get();
-        $funcionario = $this->objFunc->paginate(5);
+        if (!Session::has('login')) {return redirect('/');}       
         $idFilial = $id;
+        $funcionario = $this->objFunc->where('id_filial', $id)->paginate(5);
         return view('FuncionarioView/index', compact('funcionario', 'idFilial'));
     }
 

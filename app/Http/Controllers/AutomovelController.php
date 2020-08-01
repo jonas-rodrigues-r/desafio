@@ -52,11 +52,12 @@ class AutomovelController extends Controller
      */
     public function store(AutomovelRequest $request)
     {
-        $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)->first();
+       $validaChassi = AutomovelModel::where('n_chassi', $request->n_chassi)->first();
         if ($validaChassi) {
-            $filial = $this->filial;
-            $valida = [MSG05];
-            return view('AutomovelView/create', compact('filial'))
+            $filial = $this->objFilial->all();
+            $categoria = $this->objCategoria->all();
+            $valida = array(MSG05);
+            return view('AutomovelView/create', compact('filial', 'categoria'))
             ->withErrors($valida);
         }
 
@@ -67,10 +68,11 @@ class AutomovelController extends Controller
             'modelo' => $request->modelo,
             'cor' => $request->cor,
             'n_chassi' => $request->n_chassi,
-            'id_categoria_automovel' => $request->id_categoria_automovel
+            'id_categoria_automovel' => $request->id_categoria_automovel,
         ]);
+
         if ($cad) {
-            return redirect('automovel');
+            return redirect('listarautomovel/'.$request->id_filial);
         }
     }
 
@@ -146,8 +148,7 @@ class AutomovelController extends Controller
     public function getAutomovel($id)
     {
         if(!Session::has('login')){return redirect('/');}
-        $automovel = $this->objAutomovel->where('id_filial', $id)->get();
-        $automovel = $this->objAutomovel->paginate(5);
+        $automovel = $this->objAutomovel->where('id_filial', $id)->paginate(5);
         $idFilial = $id;
         return view('AutomovelView/index', compact('automovel','idFilial'));
     }
