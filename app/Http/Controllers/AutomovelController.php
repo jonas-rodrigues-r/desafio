@@ -32,7 +32,6 @@ class AutomovelController extends Controller
     public function index()
     {
         if(!Session::has('login')){return redirect('/');}
-        
         $automovel = $this->objAutomovel->all();
         return view('AutomovelView/index', compact('automovel'));
     }
@@ -148,7 +147,7 @@ class AutomovelController extends Controller
     {
         if(!Session::has('login')){return redirect('/');}
         $automovel = $this->objAutomovel->where('id_filial', $id)->get();
-        $automovel = $this->objAutomovel->paginate(10);
+        $automovel = $this->objAutomovel->paginate(5);
         $idFilial = $id;
         return view('AutomovelView/index', compact('automovel','idFilial'));
     }

@@ -16,7 +16,7 @@ class FuncionarioTableSeeder extends Seeder
     {
         FuncionarioModel::create([
             'id' => 1,
-            'nome' => 'Adminitrador Filial',
+            'nome' => 'Administrador Filial',
             'data_nascimento' => '1991-02-08',
             'sexo' => 'M',
             'cpf' => '38222419030',
@@ -24,7 +24,7 @@ class FuncionarioTableSeeder extends Seeder
             'cargo' => 'Supervisor',
             'salario' => '5000.00',
             'situacao' => 1,
-            'password' => Hash::make('#Adm91!'),
+            'password' => Hash::make('#Adm91'),
             'id_filial' => 1
         ]);
     }

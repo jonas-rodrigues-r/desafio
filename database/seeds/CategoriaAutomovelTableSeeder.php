@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\CategoriaAutomovelModel;
 use Illuminate\Database\Seeder;
+use App\Models\CategoriaAutomovelModel;
 
 class CategoriaAutomovelTableSeeder extends Seeder
 {
+   
     /**
      * Run the database seeds.
      *

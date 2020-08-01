@@ -10,10 +10,8 @@
 
     <title>Filial Brasil</title>
 
-    <link rel="stylesheet" type="text/css" href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-    crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{asset('bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/style_pag.css')}}">
     <script src="{{asset("js/jquery-3.5.1.min.js")}}"></script>
     <script src="{{asset("js/jquery.mask.js")}}"></script>
@@ -31,7 +29,7 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item userLog mt-2">
-                    <p class=""><strong>Usuário:</strong> Behatris Fiorentini Ramires Behatris Fiorenteini</p>
+                    <p class=""><strong>Usuário:</strong> {{Session('funcionario')}}</p>
                 </li>
             </ul>
             <a href="/funcionariologout" class="ml-4">
@@ -45,14 +43,14 @@
     <div class="container body-content">
         @yield('content')
     </div>
-
-    <script src="{{asset("js/jquery-3.5.1.min.js")}}"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset("js/javascrip.js")}}"></script>
+    <script src="{{asset("js/masks.js")}}"></script>
   </body>
 
-    <footer class="page-footer font-small teal pt-2 fixar-rodape">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <footer class="page-footer font-small teal fixar-rodape">
+        <div class="footer-copyright text-center py-1">© 2020 Copyright:
         <a href="https://www.facebook.com/jonast652"> Jonas Rodrigues Ramires</a>
         </div>
     </footer>

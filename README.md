@@ -60,4 +60,4 @@
 
         LINK: http://localhost:8000
         USUÁRIO: 38222419030
-        SENHA: #Adm91!
+        SENHA: #Adm91

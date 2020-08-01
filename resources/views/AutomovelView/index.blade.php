@@ -8,8 +8,7 @@
       	<button class="btn btn-success">Cadastrar</button>
     </a>
     <a href="{{url("filial/$idFilial[0]")}}">
-        <button class="btn btn-warning">Voltar&emsp;<i class="fas fa-reply"></i></button>
-        
+        <button class="btn btn-warning">Voltar&emsp;<i class="fas fa-reply"></i></button>   
       </a>
 </div>
 

@@ -31,7 +31,7 @@ class FilialController extends Controller
     public function index()
     {
         if (!Session::has('login')) {return redirect('/');}
-        $filial = $this->objFilial->paginate(10);
+        $filial = $this->objFilial->paginate(5);
         return view('FilialView/index', compact('filial'));
     }
      /**
